@@ -21,9 +21,8 @@ val modules = module {
     single { DatabaseFactory() }
     single { TimetableViewModel(get(), get()) }
 }
-
 fun main() {
-        embeddedServer(CIO, port = 8080, host = "0.0.0.0", module = Application::module)
+    embeddedServer(CIO, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
 

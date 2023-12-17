@@ -1,22 +1,26 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.multiplatform)
+    alias(libs.plugins.compose)
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        moduleName = "composeApp"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-            }
-        }
+//    @OptIn(ExperimentalWasmDsl::class)
+//    wasmJs {
+//        moduleName = "composeApp"
+//        browser {
+//            commonWebpackConfig {
+//                outputFileName = "composeApp.js"
+//            }
+//        }
+//        binaries.executable()
+//    }
+    js {
+        browser()
         binaries.executable()
     }
     
@@ -29,7 +33,7 @@ kotlin {
     }
     
     jvm("desktop")
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -40,32 +44,93 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
-        val desktopMain by getting
-        
-        androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.androidx.activity.compose)
+        val commonMain by getting {
+            dependencies {
+//                implementation("io.ktor:ktor-client-cio:2.3.2")
+                api(project(":shared"))
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                implementation(compose.material3)
+                implementation(libs.voyager.navigator)
+                implementation(libs.voyager.koin)
+                implementation(libs.composeImageLoader)
+                implementation(libs.napier)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.insetsx)
+                implementation(libs.ktor.core)
+                @OptIn(ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
+                implementation(libs.ktor.json)
+                implementation(libs.ktor.logging)
+                implementation(libs.ktor.negotiation)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+
+//                api(libs.androidx.ui.text.google.fonts)
+            }
         }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.ui)
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.components.resources)
-            implementation(projects.shared)
+
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
         }
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
+
+        val androidMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-cio:2.3.2")
+                implementation(libs.androidx.appcompat)
+                implementation(libs.androidx.activityCompose)
+                implementation(libs.compose.uitooling)
+                implementation(libs.kotlinx.coroutines.android)
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.koin.android)
+            }
         }
+
+        val desktopMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-cio:2.3.2")
+                implementation(compose.desktop.common)
+                implementation(compose.desktop.currentOs)
+                implementation(libs.ktor.client.okhttp)
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation(compose.html.core)
+                implementation(devNpm("copy-webpack-plugin", "9.1.0"))
+                implementation("io.ktor:ktor-client-js:2.3.2")
+            }
+        }
+
+//        val nativeMain by getting {
+//            dependencies {
+//                implementation("io.ktor:ktor-client-cio:2.3.2")
+//            }
+//        }
+
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+//        val iosMain by getting {
+//            dependencies {
+//                implementation(libs.ktor.client.darwin)
+////                implementation(libs.sqlDelight.driver.native)
+//            }
+//        }
     }
 }
 
 android {
     namespace = "ru.kingofraccoons.kursach"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk = 34
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
@@ -73,8 +138,8 @@ android {
 
     defaultConfig {
         applicationId = "ru.kingofraccoons.kursach"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk = 21
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
     }
@@ -93,8 +158,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     dependencies {
-        debugImplementation(libs.compose.ui.tooling)
+//        debugImplementation(libs.compose.ui.tooling)
     }
+}
+dependencies {
+    implementation(project(mapOf("path" to ":shared")))
+    implementation(project(mapOf("path" to ":shared")))
 }
 
 compose.desktop {

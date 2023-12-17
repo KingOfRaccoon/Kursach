@@ -10,7 +10,7 @@ plugins {
     application
     kotlin("plugin.serialization") version "1.9.21"
 //    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.21"
-    kotlin("jvm") version "1.9.21"
+//    kotlin("jvm") version "1.9.21"
     id("io.ktor.plugin") version "2.3.6"
 }
 
@@ -53,4 +53,5 @@ dependencies {
     implementation("io.insert-koin:koin-core:$koinVersion")
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-test:$koinVersion")
+//    implementation("androidx.compose.ui:ui-text-google-fonts:1.5.4")
 }

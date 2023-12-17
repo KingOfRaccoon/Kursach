@@ -1,39 +1,33 @@
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import cafe.adriel.voyager.navigator.Navigator
+import data.util.Postman
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
+import service.AuthenticationService
+import service.TimetableService
+import ui.splash.SplashScreen
+import viewmodel.AuthenticationViewModel
+import viewmodel.TimetableViewModel
 
-@OptIn(ExperimentalResourceApi::class)
+val modules = module {
+    single { Postman() }
+
+    single { AuthenticationService(get()) }
+    single { TimetableService(get()) }
+
+    single { AuthenticationViewModel(get()) }
+    single { TimetableViewModel(get()) }
+}
 @Composable
-fun App() {
-    MaterialTheme {
-        var greetingText by remember { mutableStateOf("Hello World!") }
-        var showImage by remember { mutableStateOf(false) }
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = {
-                greetingText = "Compose: ${Greeting().greet()}"
-                showImage = !showImage
-            }) {
-                Text(greetingText)
-            }
-            AnimatedVisibility(showImage) {
-                Image(
-                    painterResource("compose-multiplatform.xml"),
-                    null
-                )
-            }
-        }
+fun App()  {
+    startKoin{
+        modules(modules)
     }
+    Navigator(
+        screen = SplashScreen(),
+        onBackPressed = { currentScreen ->
+            println("Navigator: Pop screen #${(currentScreen).key}")
+            true
+        }
+    )
 }
