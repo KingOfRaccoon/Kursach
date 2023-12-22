@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Room(
     val buildingId: Int,
-    val name: String
+    val name: String,
+    var buildingName: String = ""
 )

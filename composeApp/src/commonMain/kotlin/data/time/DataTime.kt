@@ -35,7 +35,13 @@ open class DataTime(
         }
     }
 
+    fun setTime(newHour: Int, newMinute: Int) = DataTime(year, mouth, dayOfMonth, newHour, newMinute)
+
     fun getTime() = "${if (hour > 9) hour else "0$hour"}:" + if (minute > 9) "$minute" else "0$minute"
+
+    fun getTimeFormat() =
+        "${year}-${getMonth(mouth)}-${dayOfMonth}T${getTime()}:00Z"
+
 
     /** Return tomorrow/today/yesterday and day, mouth and year **/
     fun getDate(): String {
@@ -135,18 +141,18 @@ open class DataTime(
     }
 
     fun getTimeInMilliSeconds() =
-        LocalDateTime(year, mouth, dayOfMonth, hour, minute).toInstant(TimeZone.currentSystemDefault()).epochSeconds
+        LocalDateTime(year, mouth, dayOfMonth, hour, minute).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
 
-    fun endPair(duration: Double = 1.0) = DataTime(
+    fun endPair(duration: Int = 90) = DataTime(
         LocalDateTime(year, mouth, dayOfMonth, hour, minute)
             .toInstant(TimeZone.currentSystemDefault())
-            .plus((90 * duration).toInt(), DateTimeUnit.MINUTE, TimeZone.currentSystemDefault())
+            .plus(duration, DateTimeUnit.MINUTE, TimeZone.currentSystemDefault())
             .toLocalDateTime(TimeZone.currentSystemDefault())
     )
 
     fun getDayAndMouth() = "$dayOfMonth ${getMouthForTime(mouth)}"
 
-    fun getStartAndEndTime(duration: Double = 1.0) = getTime() + " - " + endPair(duration).getTime()
+    fun getStartAndEndTime(duration: Int = 90) = getTime() + " - " + endPair(duration).getTime()
 
     /** Function for compare to date **/
     operator fun compareTo(other: DataTime): Int {
@@ -175,11 +181,11 @@ open class DataTime(
                 })
 
         fun getUTCTime() = Clock.System.now().toLocalDateTime(TimeZone.UTC).let {
-            "${it.year}-${getMonth(it.monthNumber)}-${it.dayOfMonth}T${it.hour}:${it.minute}:${it.second}.${it.nanosecond / 1000}"
+            "${it.year}-${getMonth(it.monthNumber)}-${it.dayOfMonth}T${it.hour}:${it.minute}:${it.second}.${it.nanosecond / 1000}Z"
         }
 
         fun getTime() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).let {
-            "${it.year}-${getMonth(it.monthNumber)}-${it.dayOfMonth}T${it.hour}:${it.minute}:${it.second}.${it.nanosecond / 1000}"
+            "${it.year}-${getMonth(it.monthNumber)}-${it.dayOfMonth}T${it.hour}:${it.minute}:${it.second}.${it.nanosecond / 1000}Z"
         }
 
         private fun getMonth(i: Int) = if (i > 9) "$i" else "0$i"
@@ -211,6 +217,23 @@ open class DataTime(
             10 -> "Октября"
             11 -> "Ноября"
             12 -> "Декабря"
+            else -> ""
+        }
+
+        /** Return mouth as text for time in the genitive **/
+        fun getMouth(mouth: Int) = when (mouth) {
+            1 -> "Январь"
+            2 -> "Февраль"
+            3 -> "Март"
+            4 -> "Апрель"
+            5 -> "Май"
+            6 -> "Июнь"
+            7 -> "Июль"
+            8 -> "Август"
+            9 -> "Сентябрь"
+            10 -> "Октябрь"
+            11 -> "Ноябрь"
+            12 -> "Декабрь"
             else -> ""
         }
 

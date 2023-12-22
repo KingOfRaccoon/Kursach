@@ -5,9 +5,6 @@ fun CoroutineScope.timer(
     action: () -> Unit
 ) {
     this.launch(Dispatchers.Default) {
-//        while (true) {
-            delay(tickInMillis)
-            withContext(Dispatchers.Main) { action() }
-//        }
+        delay(tickInMillis); action()
     }
 }

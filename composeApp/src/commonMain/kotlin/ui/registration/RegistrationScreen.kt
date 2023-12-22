@@ -6,6 +6,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -17,6 +19,10 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import data.network.ItemFilter
+import data.network.ItemGroupFilter
+import data.network.ItemTeacherFilter
+import data.time.DataTime
 import data.util.Resource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -24,6 +30,7 @@ import org.koin.compose.koinInject
 import ui.Colors
 import ui.Colors.mainBackground
 import ui.authentication.AuthenticationScreen
+import ui.dialogs.FiltersDialog
 import ui.elements.Buttons
 import ui.elements.Icons.passwordIcon
 import ui.elements.TextFields
@@ -41,6 +48,13 @@ class RegistrationScreen : Screen {
         val viewModel = koinInject<AuthenticationViewModel>()
         val timetableViewModel = koinInject<TimetableViewModel>()
 
+        val filters = timetableViewModel.getFiltersTimetable()
+            .collectAsState(Resource.Loading<List<ItemTeacherFilter>>() to Resource.Loading())
+
+        val needDialogSearch = remember { mutableStateOf(false) }
+        val filterState = remember { mutableStateOf("") }
+        val itemFilterState = remember { mutableStateOf<ItemFilter?>(null) }
+
         val firstNameState = viewModel.firstNameFlow.collectAsState()
         val secondNameState = viewModel.secondNameFlow.collectAsState()
         val loginState = viewModel.userLoginFlow.collectAsState()
@@ -56,12 +70,18 @@ class RegistrationScreen : Screen {
 
         val scrollState = rememberScrollState()
 
+
         MaterialTheme {
             Column(Modifier.fillMaxSize().background(mainBackground).verticalScroll(scrollState)) {
                 IconButton({
                     navigator.pop()
                 }, Modifier.defaultMinSize(56.dp, 56.dp)) {
-                    Image(painterResource("icons/icon_arrow_back.xml"), "back", Modifier, colorFilter = ColorFilter.tint(Colors.textMain))
+                    Image(
+                        painterResource("icons/icon_arrow_back.xml"),
+                        "back",
+                        Modifier,
+                        colorFilter = ColorFilter.tint(Colors.textMain)
+                    )
                 }
                 Card(
                     modifier = Modifier
@@ -91,6 +111,28 @@ class RegistrationScreen : Screen {
                             secondNameErrorState
                         )
 
+                        Text(
+                            if (itemFilterState.value == null)
+                                "Фильтр для расписания"
+                            else
+                                itemFilterState.value?.name.orEmpty(),
+                            Modifier.fillMaxWidth().padding(16.dp, 24.dp, 16.dp)
+                                .border(1.dp, Colors.textViewBorder, RoundedCornerShape(100.dp)).clickable {
+                                    needDialogSearch.value = true
+                                }.padding(18.dp),
+                            color = if (itemFilterState.value == null) Colors.textViewBorder else Colors.textMain
+                        )
+
+                        if (needDialogSearch.value)
+                            FiltersDialog(
+                                filters,
+                                filterState,
+                                needDialogSearch,
+                                itemFilterState
+                            ) { itemFilter: ItemFilter ->
+
+                            }
+
                         TextFields.outlinedTextField("Логин", loginState, viewModel::setLogin, loginErrorState)
 
                         TextFields.outlinedTextField(
@@ -106,7 +148,14 @@ class RegistrationScreen : Screen {
                 }
 
                 Buttons.materialButton(
-                    viewModel::registrationUser,
+                    {
+                        viewModel.registrationUser(
+                            timetableViewModel.generateTag(
+                                itemFilterState.value?.let { it as? ItemGroupFilter }?.id,
+                                itemFilterState.value?.let { it as? ItemTeacherFilter }?.id
+                            )
+                        )
+                    },
                     Modifier.fillMaxWidth().align(Alignment.End).padding(18.dp, 32.dp, 18.dp),
                     "Создать аккаунт"
                 )
@@ -128,6 +177,14 @@ class RegistrationScreen : Screen {
         if (userData.value is Resource.Success) {
             navigator.replaceAll(HomeScreen())
             timetableViewModel.loadTypesEvents(userData.value.data?.id ?: -1)
+            val today = DataTime.now()
+            timetableViewModel.loadWeekTimetable(
+                today.year.toString(),
+                (today.getWeek() - 4).toString(),
+                userData.value.data?.groupId,
+                userData.value.data?.teacherId,
+                ownerId = userData.value.data?.id ?: -1
+            )
         }
     }
 }

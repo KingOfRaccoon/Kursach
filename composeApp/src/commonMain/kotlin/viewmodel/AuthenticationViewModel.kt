@@ -17,10 +17,10 @@ class AuthenticationViewModel(private val authenticationService: AuthenticationS
     private val _userFlow = MutableStateFlow<Resource<User>>(Resource.Loading())
     val userFlow = _userFlow.asStateFlow()
 
-    private val _userLoginFlow = MutableStateFlow("asda1234434")
+    private val _userLoginFlow = MutableStateFlow("asda")
     val userLoginFlow = _userLoginFlow.asStateFlow()
 
-    private val _userPasswordFlow = MutableStateFlow("12342342")
+    private val _userPasswordFlow = MutableStateFlow("1234")
     val userPasswordFlow = _userPasswordFlow.asStateFlow()
 
     private val _passwordVisible = MutableStateFlow(false)
@@ -100,7 +100,7 @@ class AuthenticationViewModel(private val authenticationService: AuthenticationS
         return true
     }
 
-    fun registrationUser(): Boolean {
+    fun registrationUser(filter: String): Boolean {
         if (_userLoginFlow.value.trim().isEmpty())
             _loginError.value = "Укажите ваш логин"
 
@@ -120,7 +120,7 @@ class AuthenticationViewModel(private val authenticationService: AuthenticationS
 
         coroutineScope.launch {
             _userFlow.emit(
-                authenticationService.createUser(UserDataForCreate(_userLoginFlow.value, _userPasswordFlow.value, _firstNameFlow.value, secondNameFlow.value)).also {
+                authenticationService.createUser(UserDataForCreate(_userLoginFlow.value, _userPasswordFlow.value, _firstNameFlow.value, secondNameFlow.value, filter)).also {
                     if (it is Resource.Error) {
                         _loginError.value = "Проверьте правильность введенных данных"
                         _passwordError.value = "Проверьте правильность введенных данных"

@@ -15,7 +15,7 @@ class TimetableService(private val postman: Postman) {
     private val groupsRoute = "groups/"
     private val teachersRoute = "teachers/"
     private val roomsRoute = "rooms/"
-    private val typesLessonsRoute = "typeLessons/"
+    private val typesLessonsRoute = "typesLesson/"
     private val typesEventsRoute = "types/"
     private val buildingsRoute = "buildings/"
 
@@ -85,69 +85,69 @@ class TimetableService(private val postman: Postman) {
     }
 
     suspend fun getGroupsList(page: Int, pageSize: Int = 50): Resource<PaginationPage<Group>> {
-        return postman.get(
+        return postman.submitForm(
             baseUrl,
             groupsRoute,
-            hashMapOf(
-                "page" to page.toString(),
-                "pageSize" to pageSize.toString()
-            )
+            parameters {
+                append("page", page.toString())
+                append("pageSize", pageSize.toString())
+            }
         )
     }
 
     suspend fun getTeachersList(page: Int, pageSize: Int = 50): Resource<PaginationPage<Teacher>> {
-        return postman.get(
+        return postman.submitForm(
             baseUrl,
             teachersRoute,
-            hashMapOf(
-                "page" to page.toString(),
-                "pageSize" to pageSize.toString()
-            )
+            parameters {
+                append("page", page.toString())
+                append("pageSize", pageSize.toString())
+            }
         )
     }
 
     suspend fun getRoomsList(page: Int, pageSize: Int = 50): Resource<PaginationPage<Room>> {
-        return postman.get(
+        return postman.submitForm(
             baseUrl,
             roomsRoute,
-            hashMapOf(
-                "page" to page.toString(),
-                "pageSize" to pageSize.toString()
-            )
+            parameters {
+                append("page", page.toString())
+                append("pageSize", pageSize.toString())
+            }
         )
     }
 
     suspend fun getTypesLessonList(page: Int, pageSize: Int = 50): Resource<PaginationPage<TypeLesson>> {
-        return postman.get(
+        return postman.submitForm(
             baseUrl,
             typesLessonsRoute,
-            hashMapOf(
-                "page" to page.toString(),
-                "pageSize" to pageSize.toString()
-            )
+            parameters {
+                append("page", page.toString())
+                append("pageSize", pageSize.toString())
+            }
         )
     }
 
     suspend fun getTypesEventsList(ownerId: Int, page: Int, pageSize: Int = 50): Resource<PaginationPage<TypeLesson>> {
-        return postman.get(
+        return postman.submitForm(
             baseUrl,
             typesEventsRoute,
-            hashMapOf(
-                "ownerId" to ownerId.toString(),
-                "page" to page.toString(),
-                "pageSize" to pageSize.toString()
-            )
+            parameters {
+                append("ownerId", ownerId.toString())
+                append("page", page.toString())
+                append("pageSize", pageSize.toString())
+            }
         )
     }
 
     suspend fun getBuildingsList(page: Int, pageSize: Int = 50): Resource<PaginationPage<Building>> {
-        return postman.get(
+        return postman.submitForm(
             baseUrl,
             buildingsRoute,
-            hashMapOf(
-                "page" to page.toString(),
-                "pageSize" to pageSize.toString()
-            )
+            parameters {
+                append("page", page.toString())
+                append("pageSize", pageSize.toString())
+            }
         )
     }
 }

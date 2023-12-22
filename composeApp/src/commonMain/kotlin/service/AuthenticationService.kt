@@ -27,6 +27,7 @@ class AuthenticationService(private val postman: Postman) {
             append("password", userDataForCreate.password)
             append("firstName", userDataForCreate.firstName)
             append("secondName", userDataForCreate.secondName)
+            append("filter", userDataForCreate.filter)
         })
     }
 }

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinx.serialization)
+
 }
 
 kotlin {
@@ -56,6 +57,8 @@ kotlin {
                 implementation(compose.material3)
                 implementation(libs.voyager.navigator)
                 implementation(libs.voyager.koin)
+                implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:1.0.0")
+                implementation("cafe.adriel.voyager:voyager-transitions:1.0.0")
                 implementation(libs.composeImageLoader)
                 implementation(libs.napier)
                 implementation(libs.kotlinx.coroutines.core)
@@ -70,6 +73,15 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+
+//                implementation("io.github.boguszpawlowski.composecalendar:composecalendar:1.1.1")
+                implementation("io.github.epicarchitect:calendar-compose-basis:1.0.5")
+                implementation("io.github.epicarchitect:calendar-compose-ranges:1.0.5") // includes basis
+                implementation("io.github.epicarchitect:calendar-compose-pager:1.0.5") // includes basis
+                implementation("io.github.epicarchitect:calendar-compose-datepicker:1.0.5") // includes pager + ranges
+
+                // separate artifact with utilities for working with kotlinx-datetime
+//                implementation("io.github.boguszpawlowski.composecalendar:kotlinx-datetime:1.1.1")
 
 //                api(libs.androidx.ui.text.google.fonts)
             }
@@ -116,9 +128,21 @@ kotlin {
 //            }
 //        }
 
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
+        val iosX64Main by getting {
+            dependencies{
+                implementation("io.ktor:ktor-client-cio:2.3.2")
+            }
+        }
+        val iosArm64Main by getting {
+            dependencies{
+                implementation("io.ktor:ktor-client-cio:2.3.2")
+            }
+        }
+        val iosSimulatorArm64Main by getting {
+            dependencies{
+                implementation("io.ktor:ktor-client-cio:2.3.2")
+            }
+        }
 //        val iosMain by getting {
 //            dependencies {
 //                implementation(libs.ktor.client.darwin)

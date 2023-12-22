@@ -169,6 +169,8 @@ class Postman(httpEngine: HttpClientEngineFactory<*> = httpClientEngine) {
     }
 
     suspend inline fun <reified T> obtainResult(http: HttpResponse): Resource<T> {
+        println("http result")
+        println(http.bodyAsText())
         return if (http.status.isSuccess())
             Resource.Success(http.body(), http.status.value)
         else {

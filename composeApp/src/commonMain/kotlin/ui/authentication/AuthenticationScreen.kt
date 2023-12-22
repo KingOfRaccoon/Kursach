@@ -19,6 +19,7 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import data.time.DataTime
 import data.util.Resource
 import org.koin.compose.koinInject
 import ui.Colors.mainBackground
@@ -51,7 +52,7 @@ class AuthenticationScreen : Screen {
         val passwordErrorState = viewModel.passwordError.collectAsState()
 
         val scrollState = rememberScrollState()
-        val userData = viewModel.userFlow.collectAsState()
+        val userData = timetableViewModel.combineUserTimetable(viewModel.userFlow).collectAsState(Resource.Loading())
 
         MaterialTheme {
             Column(Modifier.fillMaxSize().background(mainBackground).verticalScroll(scrollState)) {
@@ -113,6 +114,14 @@ class AuthenticationScreen : Screen {
         if (userData.value is Resource.Success) {
             navigator.replaceAll(HomeScreen())
             timetableViewModel.loadTypesEvents(userData.value.data?.id ?: -1)
+            val today = DataTime.now()
+            timetableViewModel.loadWeekTimetable(
+                today.year.toString(),
+                (today.getWeek() - 4).toString(),
+                userData.value.data?.groupId,
+                userData.value.data?.teacherId,
+                ownerId = userData.value.data?.id ?: -1
+            )
         }
     }
 }

@@ -1,11 +1,13 @@
 package data.network
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class TypeLesson(
-    val darkColor: String,
-    val id: Int,
-    val lightColor: String,
-    val name: String,
-    val ownerId: Int,
-    val shortName: String,
-    val type: String
+    val id: Int = -1,
+    val ownerId: Int = -1,
+    val name: String = "",
+    val shortName: String = "",
+    val lightColor: String = "",
+    val darkColor: String = ""
 )
