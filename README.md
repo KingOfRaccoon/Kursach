@@ -1,27 +1,34 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop, Server.
+# GuApp
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+Кроссплатформенное приложение, разработанное под операционные системы Android, iOS, MacOs, Windows, Linux и для браузеров на технологии [Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/), разрабатывалась как front-end курсовой работы.
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Описание проекта
 
-* `/server` is for the Ktor server application.
+Приложение разработано для просмотра расписания группы или преподавателя и возможности добавлять в сетку расписания своих мероприятий, чтобы все дела можно было видеть в одном месте.
 
-* `/shared` is for the code that will be shared between all targets in the project.
-  The most important subfolder is `commonMain`. If preferred, you can add code to the platform-specific folders here too.
+## Стек приложения
 
+- [Compose Multiplatfrom](https://www.jetbrains.com/lp/compose-multiplatform/)
+- [Ktor](https://ktor.io/docs/welcome.html)
+- [Kamel](https://github.com/Kamel-Media/Kamel)
+- [Multiplafrom Settings](https://github.com/russhwolf/multiplatform-settings)
+- [Koin](https://insert-koin.io)
+- [Voyager](https://github.com/adrielcafe/voyager)
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+## Запуск приложения
 
-**Note:** Compose/Web is Experimental and may be changed at any time. Use it only for evaluation purposes.
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
+IDE: Android Studio/Fleet (на macOS может запускать iOS) или связка Xcode (доступна только под macOS, нужна для запуска приложения на iOS) и IntellijIdea (нужна для запуска приложения под Android/Desktop/Web)
 
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.
+Плагины: необходимо установить плагин Kotlin Multiplatform Mobile
+На macOS необходимо уставить cocoapods (это можно сделать через brew)
+
+Запуск: для запуска мобильного приложения в эмуляторе понадобится виртуализация
+Для Intel: Установка Intel HAXM
+Для AMD: включить в настройках BIOS/UEFI виртуализацию
+
+## Скриншоты
+<p>
+<img src="../master/img2248.jpg" alt="Онбординг" width="300" />
+<img src="https://github.com/KingOfRaccoon/ToWork/blob/master/Screenshot_20240329_122319.png" alt="Авторизация" width="300" />
+<img src="https://github.com/KingOfRaccoon/ToWork/blob/master/2024-03-29 12.24.07.jpg" alt="Регистрация" width="300" />
+</p>
