@@ -28,7 +28,16 @@ IDE: Android Studio/Fleet (на macOS может запускать iOS) или 
 
 ## Скриншоты
 <p>
-<img src="../master/img2248.jpg" alt="Онбординг" width="300" />
-<img src="https://github.com/KingOfRaccoon/ToWork/blob/master/Screenshot_20240329_122319.png" alt="Авторизация" width="300" />
-<img src="https://github.com/KingOfRaccoon/ToWork/blob/master/2024-03-29 12.24.07.jpg" alt="Регистрация" width="300" />
+  <img src="../master/img2248.jpg" alt="Авторизация" width="300" />
+  <img src="../master/img2254.jpg" alt="Регистрация" width="300" />
+  <img src="../master/img2258.jpg" alt="Главный экран" width="300" />
+  <img src="../master/img2262.jpg" alt="Главный экран (если на данный день нет дел и пар)" width="300" />
+  <img src="../master/img2266.jpg" alt="Экран с детальной информацией о паре" width="300" />
+  <img src="../master/img2270.jpg" alt="Экран с детальной информацией о личном мероприятии" width="300" />
+  <img src="../master/img2274.jpg" alt="Экран поиска расписания" width="300" />
+  <img src="../master/img2278.jpg" alt="Экран поиска расписания с найденным расписанием" width="300" />
+  <img src="../master/img2282.jpg" alt="Экран полноразмерного календаря" width="300" />
+  <img src="../master/img2288.jpg" alt="Экран с детальной информацией о паре в полноформатном календаре" width="300" />
+  <img src="../master/img2292.jpg" alt="Экран создания нового мероприятия" width="300" />
+  <img src="../master/img2296.jpg" alt="Экран создания нового тега мероприятий" width="300" />
 </p>
