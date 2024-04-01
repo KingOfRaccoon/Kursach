@@ -11,7 +11,7 @@
 - [Compose Multiplatfrom](https://www.jetbrains.com/lp/compose-multiplatform/)
 - [Ktor](https://ktor.io/docs/welcome.html)
 - [Kamel](https://github.com/Kamel-Media/Kamel)
-- [Multiplafrom Settings](https://github.com/russhwolf/multiplatform-settings)
+- [Multiplaform Settings](https://github.com/russhwolf/multiplatform-settings)
 - [Koin](https://insert-koin.io)
 - [Voyager](https://github.com/adrielcafe/voyager)
 
