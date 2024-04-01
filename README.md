@@ -8,7 +8,7 @@
 
 ## Стек приложения
 
-- [Compose Multiplatfrom](https://www.jetbrains.com/lp/compose-multiplatform/)
+- [Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/)
 - [Ktor](https://ktor.io/docs/welcome.html)
 - [Kamel](https://github.com/Kamel-Media/Kamel)
 - [Multiplaform Settings](https://github.com/russhwolf/multiplatform-settings)
